@@ -81,7 +81,10 @@ html_content = '''
             <tbody>
 '''
 
-for nome, dados in dados_jogadores.items():
+# Ordenar jogadores pela pontuação atual
+jogadores_ordenados = sorted(dados_jogadores.items(), key=lambda item: item[1]['pontuacao_atual'], reverse=True)
+
+for nome, dados in jogadores_ordenados:
     html_content += f'''
                 <tr>
                     <td>{nome}</td>
