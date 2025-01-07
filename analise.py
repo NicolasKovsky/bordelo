@@ -52,6 +52,10 @@ for info in ilhas_com_multiplas_equipes.values():
 # Convertendo o conjunto de alianças em uma lista para facilitar a formatação do título
 alianças = sorted(list(alianças))
 
+# Criando o título e o nome do arquivo HTML dinamicamente
+titulo = f'Análise de Ilhas {alianças[0]} vs {alianças[1]}'
+nome_arquivo_html = f'analise_{alianças[0]}_vs_{alianças[1]}.html'
+
 # Escrevendo os resultados em um arquivo CSV
 with open('analise.csv', 'w', newline='', encoding='utf-8') as csvfile:
     csvwriter = csv.writer(csvfile)
@@ -70,12 +74,12 @@ html_content = f'''
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Ilhas {alianças[0]} vs {alianças[1]}</title>
+    <title>{titulo}</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">Análise de Ilhas {alianças[0]} vs {alianças[1]}</h1>
+        <h1 class="mt-5">{titulo}</h1>
         <table class="table table-striped mt-3">
             <thead>
                 <tr>
@@ -116,7 +120,7 @@ html_content += '''
 </html>
 '''
 
-with open('analise.html', 'w', encoding='utf-8') as htmlfile:
+with open(nome_arquivo_html, 'w', encoding='utf-8') as htmlfile:
     htmlfile.write(html_content)
 
-print("Resultados salvos em analise.csv e analise.html")
+print(f"Resultados salvos em analise.csv e {nome_arquivo_html}")
