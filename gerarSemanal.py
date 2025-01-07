@@ -38,53 +38,57 @@ for member in brics_members:
         pseudobanco['jogadores'][nome]['pontuacoes'] = pseudobanco['jogadores'][nome]['pontuacoes'][-5:]
         pseudobanco['jogadores'][nome]['datas'] = pseudobanco['jogadores'][nome]['datas'][-5:]
 
-# Salvando o pseudobanco de dados atualizado
-with open(db_filename, 'w', encoding='utf-8') as db_file:
-    json.dump(pseudobanco, db_file, indent=4, ensure_ascii=False)
+# Dicionário para armazenar dados dos jogadores
+dados_jogadores = {}
+
+# Processar dados dos jogadores
+for member in brics_members:
+    nome = member[0]
+    pontuacao = member[1]
+    
+    if nome not in dados_jogadores:
+        dados_jogadores[nome] = {
+            'pontuacao_atual': pontuacao,
+            'ultimas_pontuacoes': pseudobanco['jogadores'][nome]['pontuacoes'],
+            'ultimas_datas': pseudobanco['jogadores'][nome]['datas']
+        }
 
 # Criando o título e o nome do arquivo HTML dinamicamente
 titulo = 'Relatório Semanal de Desenvolvimento - BRICS'
 nome_arquivo_html = 'relatorio_semanal_BRICS.html'
 
-# Escrevendo os resultados em um arquivo HTML com Bootstrap
-html_content = f'''
+# Gerar HTML
+html_content = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{titulo}</title>
+    <title>Relatório Semanal BRICS</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">{titulo}</h1>
+        <h1 class="mt-5">Relatório Semanal BRICS</h1>
         <table class="table table-striped mt-3">
             <thead>
                 <tr>
                     <th>Nome</th>
                     <th>Pontuação Atual</th>
-                    <th>Cidades [Localização da Ilha]</th>
                     <th>Últimas 5 Pontuações</th>
                 </tr>
             </thead>
             <tbody>
 '''
 
-for member in brics_members:
-    nome = member[0]
-    pontuacao = member[1]
-    cidades = f"{member[3]} [{member[5]}]"
-    ultimas_pontuacoes = pseudobanco['jogadores'][nome]['pontuacoes']
-    ultimas_datas = pseudobanco['jogadores'][nome]['datas']
+for nome, dados in dados_jogadores.items():
     html_content += f'''
                 <tr>
                     <td>{nome}</td>
-                    <td>{pontuacao}</td>
-                    <td>{cidades}</td>
+                    <td>{dados['pontuacao_atual']}</td>
                     <td><ul>
     '''
-    for p, d in zip(ultimas_pontuacoes, ultimas_datas):
+    for p, d in zip(dados['ultimas_pontuacoes'], dados['ultimas_datas']):
         html_content += f'<li>{p} ({d})</li>'
     html_content += '''
                     </ul></td>
