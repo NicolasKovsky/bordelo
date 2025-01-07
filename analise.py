@@ -19,16 +19,17 @@ ilhas = {}
 
 # Processando os dados
 for entry in data:
-    if len(entry) < 9:
+    if len(entry) < 10:
         continue  # Ignorar entradas que não têm todos os campos necessários
 
     nome_jogador = entry[0]
-    aliança = entry[1]
-    nome_cidade = entry[2]
-    coordenada = entry[4]
-    nome_ilha = entry[8]
+    pontuacao = entry[1]
+    aliança = entry[2]
+    nome_cidade = entry[3]
+    coordenada = entry[5]
+    nome_ilha = entry[9]
 
-    jogador_info = f"{nome_cidade} ({nome_jogador} - {aliança})"
+    jogador_info = f"{nome_cidade} ({nome_jogador} - {pontuacao} - {aliança})"
 
     if coordenada not in ilhas:
         ilhas[coordenada] = {'nome_ilha': nome_ilha, 'equipes': set(), 'jogadores': {}}
